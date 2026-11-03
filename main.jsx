@@ -335,7 +335,7 @@ const G = `
      edge on every screen, square so they never distort, height-capped in
      landscape so they never eat the whole fold */
   .hero-logo{position:relative;width:min(1000px,100%);aspect-ratio:1/1;margin:0 auto 6px;animation:floatY 5s ease-in-out infinite}
-  .entry-logo{position:relative;width:min(720px,94vw);aspect-ratio:1/1;margin:0 auto 22px;animation:floatY 4.2s ease-in-out infinite;flex-shrink:0}
+  .entry-logo{position:relative;left:50%;translate:-50% 0;width:min(720px,94vw);aspect-ratio:1/1;margin:0 auto 22px;animation:floatY 4.2s ease-in-out infinite;flex-shrink:0}
   @media(orientation:landscape) and (max-height:540px){.hero-logo{width:min(1000px,100%,118vh)}.entry-logo{width:min(720px,94vw,118vh)}}
   .ph-ring{width:62%;aspect-ratio:1;max-width:150px;border-radius:50%;border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 40px rgba(var(--gold-rgb),.1)}
   .ph-mono{font-family:${SERIF};font-size:clamp(44px,9vw,68px);font-weight:300;color:var(--gold);line-height:1}
