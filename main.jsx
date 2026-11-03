@@ -328,11 +328,14 @@ const G = `
   html[data-fsize="large"] body{font-size:16px}
   html[data-fsize="large"] .card p{font-size:14.5px;line-height:1.75}
   html[data-fsize="large"] .btn{font-size:11px}
-  /* homepage hero logo — as large as its area allows, square so it never
-     distorts, capped by viewport width on portrait and by height in
-     landscape so it never crowds out the headline */
-  .hero-logo{position:relative;width:min(440px,86vw);aspect-ratio:1/1;margin:0 auto 6px;animation:floatY 5s ease-in-out infinite}
-  @media(orientation:landscape) and (max-height:540px){.hero-logo{width:min(320px,72vh)}}
+  html[data-fsize="xlarge"] body{font-size:22px}
+  html[data-fsize="xlarge"] .card p{font-size:19px;line-height:1.75}
+  html[data-fsize="xlarge"] .btn{font-size:12.5px}
+  /* floating logos (entry screen + homepage hero) — stretch nearly edge to
+     edge of their column on every screen, square so they never distort,
+     height-capped in landscape so they never eat the whole fold */
+  .hero-logo{position:relative;width:min(680px,96%);aspect-ratio:1/1;margin:0 auto 6px;animation:floatY 5s ease-in-out infinite}
+  @media(orientation:landscape) and (max-height:540px){.hero-logo{width:min(680px,96%,118vh)}}
   .ph-ring{width:62%;aspect-ratio:1;max-width:150px;border-radius:50%;border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 40px rgba(var(--gold-rgb),.1)}
   .ph-mono{font-family:${SERIF};font-size:clamp(44px,9vw,68px);font-weight:300;color:var(--gold);line-height:1}
   .ph-brand{font-size:8px;letter-spacing:.42em;text-transform:uppercase;color:${DIM3}}
@@ -533,7 +536,7 @@ function applyBranding(b) {
     const de = document.documentElement;
     de.style.setProperty("--brand-serif", HEADING_FONTS[b.heading_font] || HEADING_FONTS.cormorant);
     de.style.setProperty("--brand-sans", BODY_FONTS[b.body_font] || BODY_FONTS.montserrat);
-    de.setAttribute("data-fsize", ["small", "medium", "large"].includes(b.font_size) ? b.font_size : "medium");
+    de.setAttribute("data-fsize", ["small", "medium", "large", "xlarge"].includes(b.font_size) ? b.font_size : "medium");
   } catch (_) {}
 }
 const SettingsContext = createContext({ settings: null, refresh: () => {} });
@@ -992,9 +995,9 @@ function FloatingParticles() {
 
 function FloatingHeroLogo() {
   return (
-    <div style={{ position: "relative", width: 248, height: 248, margin: "0 auto 22px", animation: "floatY 4.2s ease-in-out infinite" }}>
-      <div style={{ position: "absolute", inset: -46, borderRadius: "50%", background: "radial-gradient(circle, rgba(var(--gold-rgb),.26) 0%, rgba(var(--gold-rgb),.07) 48%, transparent 68%)", filter: "blur(20px)", pointerEvents: "none" }} />
-      <img src={LOGO2} alt="The Vial Vault" width="248" height="248" style={{ position: "relative", width: 248, height: 248, objectFit: "contain", display: "block", filter: "var(--logo-filter)" }} />
+    <div className="hero-logo" style={{ margin: "0 auto 22px", animationDuration: "4.2s" }}>
+      <div style={{ position: "absolute", inset: "-16%", borderRadius: "50%", background: "radial-gradient(circle, rgba(var(--gold-rgb),.26) 0%, rgba(var(--gold-rgb),.07) 48%, transparent 68%)", filter: "blur(20px)", pointerEvents: "none" }} />
+      <img src={LOGO2} alt="The Vial Vault" width="680" height="680" style={{ position: "relative", width: "100%", height: "100%", objectFit: "contain", display: "block", filter: "var(--logo-filter)" }} />
     </div>
   );
 }
@@ -2537,6 +2540,7 @@ function SettingsPanel({ onClose }) {
               <option value="small">Compact</option>
               <option value="medium">Regular</option>
               <option value="large">Big &amp; easy to read</option>
+              <option value="xlarge">Extra big (22px)</option>
             </select>
           </div>
         </div>
