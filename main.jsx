@@ -987,9 +987,9 @@ function FloatingParticles() {
 
 function FloatingHeroLogo() {
   return (
-    <div style={{ position: "relative", width: 200, height: 200, margin: "0 auto 22px", animation: "floatY 4.2s ease-in-out infinite" }}>
+    <div style={{ position: "relative", width: 248, height: 248, margin: "0 auto 22px", animation: "floatY 4.2s ease-in-out infinite" }}>
       <div style={{ position: "absolute", inset: -46, borderRadius: "50%", background: "radial-gradient(circle, rgba(var(--gold-rgb),.26) 0%, rgba(var(--gold-rgb),.07) 48%, transparent 68%)", filter: "blur(20px)", pointerEvents: "none" }} />
-      <img src={LOGO2} alt="The Vial Vault" width="200" height="200" style={{ position: "relative", width: 200, height: 200, objectFit: "contain", display: "block", filter: "var(--logo-filter)" }} />
+      <img src={LOGO2} alt="The Vial Vault" width="248" height="248" style={{ position: "relative", width: 248, height: 248, objectFit: "contain", display: "block", filter: "var(--logo-filter)" }} />
     </div>
   );
 }
@@ -1052,9 +1052,9 @@ function HomePage({ onAdd }) {
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 38%, var(--hero-glow) 0%, transparent 64%)", animation: "heroBreathe 7s ease-in-out infinite", pointerEvents: "none" }} />
         <img aria-hidden="true" alt="" src={LOGO2} style={{ position: "absolute", top: "50%", left: "50%", width: "min(620px,92vw)", transform: "translate(-50%,-52%)", opacity: 0.07, pointerEvents: "none", filter: "saturate(.8)" }} />
         <div style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ position: "relative", width: 196, height: 196, margin: "0 auto 6px", animation: "floatY 5s ease-in-out infinite" }}>
+          <div style={{ position: "relative", width: 258, height: 258, margin: "0 auto 6px", animation: "floatY 5s ease-in-out infinite" }}>
             <div aria-hidden="true" style={{ position: "absolute", inset: -42, borderRadius: "50%", background: "radial-gradient(circle, rgba(var(--gold-rgb),.30) 0%, rgba(var(--gold-rgb),.08) 48%, transparent 68%)", filter: "blur(18px)", pointerEvents: "none" }} />
-            <img src={LOGO2} alt="The Vial Vault" width="196" height="196" style={{ position: "relative", width: 196, height: 196, objectFit: "contain", display: "block", filter: "var(--logo-filter)" }} />
+            <img src={LOGO2} alt="The Vial Vault" width="258" height="258" style={{ position: "relative", width: 258, height: 258, objectFit: "contain", display: "block", filter: "var(--logo-filter)" }} />
           </div>
           <div className="eyebrow" style={{ marginBottom: 26, animation: "fadeUp .7s ease both" }}>{t("home.eyebrow")}</div>
           <h1 className="display" style={{ fontSize: "clamp(46px,8vw,104px)", marginBottom: 26, animation: "fadeUp .8s .08s ease both" }}>
