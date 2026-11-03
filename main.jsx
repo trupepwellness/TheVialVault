@@ -432,7 +432,7 @@ function Rich({ text, color = GOLD }) {
 }
 
 // ── ROUTER (hash-based: back/forward + deep links, zero hosting config) ─
-const PAGES = new Set(["home","products","stacks","calculator","howto","faq","about","contact","shipping","returns","terms","privacy","disclaimer","labresults","account"]);
+const PAGES = new Set(["home","products","stacks","calculator","howto","faq","about","contact","shipping","terms","privacy","disclaimer","labresults","account"]);
 
 function routeFromHash() {
   // Clean-URL alias: /admin (served via a Vercel rewrite) opens the admin page.
@@ -941,7 +941,7 @@ function Footer() {
             <div style={{ fontSize: 12, color: DIM, lineHeight: 1.9, maxWidth: 260 }}>{brandText(settings, "footer_tagline", t("footer.tagline"))}</div>
           </div>
           {col(t("footer.navigate"), [[t("nav.catalog"), "products"], [t("nav.stacks"), "stacks"], [t("nav.calculator"), "calculator"], [t("nav.howto"), "howto"], [t("nav.labresults"), "labresults"], [t("nav.about"), "about"]])}
-          {col(t("footer.support"), [[t("nav.faq"), "faq"], [t("nav.shipping"), "shipping"], [t("nav.returns"), "returns"], [t("nav.contact"), "contact"]])}
+          {col(t("footer.support"), [[t("nav.faq"), "faq"], [t("nav.shipping"), "shipping"], [t("nav.contact"), "contact"]])}
           {col(t("footer.legal"), [[t("footer.terms"), "terms"], [t("footer.privacy"), "privacy"], [t("footer.disclaimerLink"), "disclaimer"]])}
           <div>
             <div className="eyebrow" style={{ marginBottom: 18, fontSize: 9.5 }}>{t("footer.contact")}</div>
@@ -4114,7 +4114,7 @@ function usePageMeta(route) {
     }
   }, [route.page, route.param, lang, products, t]);
 }
-const DICT_PAGES = Object.fromEntries(["home","products","product","stacks","calculator","howto","faq","about","contact","shipping","returns","terms","privacy","disclaimer","labresults","account"].map((k) => [k, 1]));
+const DICT_PAGES = Object.fromEntries(["home","products","product","stacks","calculator","howto","faq","about","contact","shipping","terms","privacy","disclaimer","labresults","account"].map((k) => [k, 1]));
 
 // ── APP ─────────────────────────────────────────────────────────
 function Shell() {
