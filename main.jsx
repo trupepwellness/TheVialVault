@@ -199,7 +199,7 @@ const G = `
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth;color-scheme:dark;-webkit-text-size-adjust:100%}
   html[data-theme="light"]{color-scheme:light}
-  body{background:var(--bg);color:var(--fg);font-family:${SANS};font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background-color .35s ease,color .35s ease}
+  body{background:var(--bg);color:var(--fg);font-family:var(--brand-sans,'Montserrat',sans-serif);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background-color .35s ease,color .35s ease}
   a{color:inherit;text-decoration:none}
   button{cursor:pointer;border:none;background:none;font-family:inherit;color:inherit}
   input,textarea,select{outline:none;font-family:inherit;color:var(--fg);background:var(--input-bg)}
@@ -238,7 +238,7 @@ const G = `
   .wrap-md{max-width:920px;margin:0 auto}
   .wrap-sm{max-width:760px;margin:0 auto}
   .eyebrow{font-size:10px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold);font-weight:600}
-  .display{font-family:${SERIF};font-weight:300;letter-spacing:-.005em;line-height:1.08}
+  .display{font-family:var(--brand-serif,'Cormorant Garamond',serif);font-weight:300;letter-spacing:-.005em;line-height:1.08}
   .rule{height:1px;background:linear-gradient(90deg,transparent,var(--border-strong),transparent);border:0}
   .grid-auto{display:grid;gap:24px}
 
@@ -323,6 +323,11 @@ const G = `
   /* her signature soft-pink page frame (Origin has purple, TruPep has gold) */
   @keyframes framePulse{0%,100%{opacity:.6}50%{opacity:1}}
   .vv-frame{position:fixed;inset:0;pointer-events:none;z-index:2000;border:2px solid var(--frame);box-shadow:inset 0 0 26px var(--frame);animation:framePulse 5.5s ease-in-out infinite}
+  /* reading-size presets (Admin › Settings › Your Words & Look) */
+  html[data-fsize="small"] body{font-size:13px}
+  html[data-fsize="large"] body{font-size:16px}
+  html[data-fsize="large"] .card p{font-size:14.5px;line-height:1.75}
+  html[data-fsize="large"] .btn{font-size:11px}
   .ph-ring{width:62%;aspect-ratio:1;max-width:150px;border-radius:50%;border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 40px rgba(var(--gold-rgb),.1)}
   .ph-mono{font-family:${SERIF};font-size:clamp(44px,9vw,68px);font-weight:300;color:var(--gold);line-height:1}
   .ph-brand{font-size:8px;letter-spacing:.42em;text-transform:uppercase;color:${DIM3}}
@@ -516,19 +521,34 @@ const useProducts = () => useContext(ProductsContext);
 
 // ── SETTINGS CONTEXT (payment handles + contact, from Admin › Settings) ─
 const isPlaceholder = (v) => !v || /^\s*placeholder/i.test(String(v));
+const HEADING_FONTS = { cormorant: "'Cormorant Garamond', serif", playfair: "'Playfair Display', serif", italiana: "'Italiana', serif" };
+const BODY_FONTS = { montserrat: "'Montserrat', sans-serif", jost: "'Jost', sans-serif", quicksand: "'Quicksand', sans-serif" };
+function applyBranding(b) {
+  try {
+    const de = document.documentElement;
+    de.style.setProperty("--brand-serif", HEADING_FONTS[b.heading_font] || HEADING_FONTS.cormorant);
+    de.style.setProperty("--brand-sans", BODY_FONTS[b.body_font] || BODY_FONTS.montserrat);
+    de.setAttribute("data-fsize", ["small", "medium", "large"].includes(b.font_size) ? b.font_size : "medium");
+  } catch (_) {}
+}
 const SettingsContext = createContext({ settings: null, refresh: () => {} });
 function SettingsProvider({ children }) {
   const [settings, setSettings] = useState(null);
   const refresh = useCallback(async () => {
     try {
       const { data, error } = await supabase.from("site_settings").select("*").eq("id", 1).maybeSingle();
-      if (!error && data) setSettings(data);
+      if (!error && data) { setSettings(data); applyBranding(data.branding || {}); }
     } catch (_) {}
   }, []);
   useEffect(() => { refresh(); }, [refresh]);
   return <SettingsContext.Provider value={{ settings, refresh }}>{children}</SettingsContext.Provider>;
 }
 const useSettings = () => useContext(SettingsContext);
+// Her own words (Admin › Settings › Your Words & Look). Blank = built-in wording.
+const brandText = (settings, key, fallback) => {
+  const v = settings && settings.branding && settings.branding[key];
+  return (typeof v === "string" && v.trim()) ? v : fallback;
+};
 function useContact() {
   const { settings } = useSettings();
   const pick = (v, d) => (isPlaceholder(v) ? d : v);
@@ -890,6 +910,7 @@ function Footer() {
   const { t } = useI18n();
   const { go } = useRouter();
   const contact = useContact();
+  const { settings } = useSettings();
   const col = (title, links) => (
     <div>
       <div className="eyebrow" style={{ marginBottom: 18, fontSize: 9.5 }}>{title}</div>
@@ -908,7 +929,7 @@ function Footer() {
               <img src={LOGO} alt="" width="36" height="36" style={{ width: 36, height: 36, objectFit: "contain" }} />
               <div style={{ fontFamily: SERIF, fontSize: 20, color: GOLD, letterSpacing: "0.12em" }}>The Vial Vault <span aria-hidden="true" style={{ fontSize: 13, letterSpacing: 0 }}>🦋</span></div>
             </div>
-            <div style={{ fontSize: 12, color: DIM, lineHeight: 1.9, maxWidth: 260 }}>{t("footer.tagline")}</div>
+            <div style={{ fontSize: 12, color: DIM, lineHeight: 1.9, maxWidth: 260 }}>{brandText(settings, "footer_tagline", t("footer.tagline"))}</div>
           </div>
           {col(t("footer.navigate"), [[t("nav.catalog"), "products"], [t("nav.stacks"), "stacks"], [t("nav.calculator"), "calculator"], [t("nav.howto"), "howto"], [t("nav.labresults"), "labresults"], [t("nav.about"), "about"]])}
           {col(t("footer.support"), [[t("nav.faq"), "faq"], [t("nav.shipping"), "shipping"], [t("nav.returns"), "returns"], [t("nav.contact"), "contact"]])}
@@ -977,6 +998,7 @@ function IntroPage() {
   const { t } = useI18n();
   const { enter } = useRouter();
   const { session, customer, loading } = useAuth();
+  const { settings } = useSettings();
   return (
     <div className="page-enter" style={{ position: "relative", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "84px 20px 50px", overflow: "hidden" }}>
       <div style={{ position: "fixed", top: 14, right: 14, zIndex: 20, display: "flex", gap: 8, alignItems: "center" }}>
@@ -988,7 +1010,7 @@ function IntroPage() {
       <div style={{ position: "relative", zIndex: 1, textAlign: "center", maxWidth: 430, width: "100%" }}>
         <FloatingHeroLogo />
         <h1 className="display" style={{ fontSize: 36, marginBottom: 8 }}>The Vial Vault</h1>
-        <div style={{ fontSize: 10, letterSpacing: "0.32em", textTransform: "uppercase", color: DIM2, marginBottom: 26 }}>{t("intro.tagline")}</div>
+        <div style={{ fontSize: 10, letterSpacing: "0.32em", textTransform: "uppercase", color: DIM2, marginBottom: 26 }}>{brandText(settings, "tagline", t("intro.tagline"))}</div>
         <p style={{ fontSize: 12.5, color: DIM, lineHeight: 1.9, marginBottom: 26 }}><Rich text={t("intro.notice")} /></p>
         {loading ? (
           <div style={{ color: DIM2, fontSize: 12 }}>{t("common.loading")}</div>
@@ -1012,6 +1034,7 @@ function HomePage({ onAdd }) {
   const { t } = useI18n();
   const { go } = useRouter();
   const { products } = useProducts();
+  const { settings } = useSettings();
   useReveal(products.length);
   const featuredIds = ["retatrutide", "bpc157", "nad", "tb500"];
   let featured = products.filter((p) => featuredIds.includes(p.id));
@@ -1035,12 +1058,12 @@ function HomePage({ onAdd }) {
           </div>
           <div className="eyebrow" style={{ marginBottom: 26, animation: "fadeUp .7s ease both" }}>{t("home.eyebrow")}</div>
           <h1 className="display" style={{ fontSize: "clamp(46px,8vw,104px)", marginBottom: 26, animation: "fadeUp .8s .08s ease both" }}>
-            {t("home.h1a")}<br /><span style={{ color: GOLD }}>{t("home.h1b")}</span>
+            {brandText(settings, "hero_title_a", t("home.h1a"))}<br /><span style={{ color: GOLD }}>{brandText(settings, "hero_title_b", t("home.h1b"))}</span>
           </h1>
           <p style={{ fontSize: 15, color: DIM, maxWidth: 560, margin: "0 auto 40px", lineHeight: 1.9, animation: "fadeUp .8s .18s ease both" }}>
-            {t("home.sub", { n: n || "25", s: STACKS.length })}
+            {brandText(settings, "hero_sub", t("home.sub", { n: n || "25", s: STACKS.length }))}
           </p>
-          <div aria-hidden="true" style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: 20, letterSpacing: "0.16em", color: GOLD, margin: "-16px auto 36px", animation: "fadeUp .8s .24s ease both" }}>{t("intro.tagline")}</div>
+          <div aria-hidden="true" style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: 20, letterSpacing: "0.16em", color: GOLD, margin: "-16px auto 36px", animation: "fadeUp .8s .24s ease both" }}>{brandText(settings, "tagline", t("intro.tagline"))}</div>
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", animation: "fadeUp .8s .28s ease both" }}>
             <Btn onClick={() => go("products")}>{t("home.ctaShop")}<ArrowRight size={14} /></Btn>
             <Btn outline onClick={() => go("stacks")}>{t("home.ctaStacks")}</Btn>
@@ -2424,18 +2447,26 @@ const SETTINGS_FIELDS = [
 function SettingsPanel({ onClose }) {
   const { refresh } = useSettings();
   const [form, setForm] = useState(null);
+  const [brand, setBrand] = useState({});
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState("");
   useEffect(() => {
     supabase.from("site_settings").select("*").eq("id", 1).maybeSingle().then(({ data, error }) => {
       if (error) { setMsg("Couldn't load settings: " + error.message); setForm({}); return; }
       setForm(data || {});
+      setBrand((data && data.branding) || {});
     });
   }, []);
   async function save() {
     setSaving(true); setMsg("");
     const payload = {};
     SETTINGS_FIELDS.forEach(([k]) => { const v = (form[k] || "").trim(); payload[k] = v || null; });
+    const b = {};
+    ["hero_title_a", "hero_title_b", "hero_sub", "tagline", "footer_tagline"].forEach((k) => { b[k] = (brand[k] || "").trim(); });
+    b.heading_font = brand.heading_font || "cormorant";
+    b.body_font = brand.body_font || "montserrat";
+    b.font_size = brand.font_size || "medium";
+    payload.branding = b;
     const { error } = await supabase.from("site_settings").update(payload).eq("id", 1);
     setSaving(false);
     if (error) { setMsg("Save failed: " + error.message); return; }
@@ -2458,6 +2489,59 @@ function SettingsPanel({ onClose }) {
               style={{ ...inputStyle, borderColor: isPlaceholder(form[k]) && k !== "cashapp_handle" ? "var(--warn)" : ADMIN_BORDER }} />
           </div>
         ))}
+      </div>
+      <div style={{ borderTop: `1px solid ${ADMIN_BORDER}`, marginTop: 20, paddingTop: 18 }}>
+        <div style={{ fontFamily: SERIF, fontSize: 20, color: GOLD, marginBottom: 6, fontWeight: 300 }}>Your Words &amp; Look</div>
+        <div style={{ fontSize: 12, color: fg(0.6), marginBottom: 16, lineHeight: 1.7 }}>
+          Make the site sound and look like you. Leave any box blank to keep the built-in wording.
+          Words you type show on both the English and Spanish pages, exactly as you type them.
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: "0 16px" }}>
+          <div>
+            <label style={labelStyle} htmlFor="brand-hero-a">Homepage headline — first line</label>
+            <input id="brand-hero-a" value={brand.hero_title_a || ""} placeholder="Advanced Research" onChange={(e) => setBrand((f) => ({ ...f, hero_title_a: e.target.value }))} style={inputStyle} />
+          </div>
+          <div>
+            <label style={labelStyle} htmlFor="brand-hero-b">Homepage headline — second line (pink)</label>
+            <input id="brand-hero-b" value={brand.hero_title_b || ""} placeholder="Peptide Compounds" onChange={(e) => setBrand((f) => ({ ...f, hero_title_b: e.target.value }))} style={inputStyle} />
+          </div>
+          <div>
+            <label style={labelStyle} htmlFor="brand-tagline">Your motto</label>
+            <input id="brand-tagline" value={brand.tagline || ""} placeholder="Purity · Potency · Performance" onChange={(e) => setBrand((f) => ({ ...f, tagline: e.target.value }))} style={inputStyle} />
+          </div>
+          <div>
+            <label style={labelStyle} htmlFor="brand-heading-font">Headline style</label>
+            <select id="brand-heading-font" value={brand.heading_font || "cormorant"} onChange={(e) => setBrand((f) => ({ ...f, heading_font: e.target.value }))} style={inputStyle}>
+              <option value="cormorant">Elegant (Cormorant)</option>
+              <option value="playfair">Classic (Playfair)</option>
+              <option value="italiana">Boutique (Italiana)</option>
+            </select>
+          </div>
+          <div>
+            <label style={labelStyle} htmlFor="brand-body-font">Reading font</label>
+            <select id="brand-body-font" value={brand.body_font || "montserrat"} onChange={(e) => setBrand((f) => ({ ...f, body_font: e.target.value }))} style={inputStyle}>
+              <option value="montserrat">Clean (Montserrat)</option>
+              <option value="jost">Soft &amp; round (Jost)</option>
+              <option value="quicksand">Friendly (Quicksand)</option>
+            </select>
+          </div>
+          <div>
+            <label style={labelStyle} htmlFor="brand-font-size">Text size</label>
+            <select id="brand-font-size" value={brand.font_size || "medium"} onChange={(e) => setBrand((f) => ({ ...f, font_size: e.target.value }))} style={inputStyle}>
+              <option value="small">Compact</option>
+              <option value="medium">Regular</option>
+              <option value="large">Big &amp; easy to read</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label style={labelStyle} htmlFor="brand-hero-sub">Homepage paragraph under the headline</label>
+          <input id="brand-hero-sub" value={brand.hero_sub || ""} placeholder="Blank = built-in text (mentions your product count automatically)" onChange={(e) => setBrand((f) => ({ ...f, hero_sub: e.target.value }))} style={inputStyle} />
+        </div>
+        <div>
+          <label style={labelStyle} htmlFor="brand-footer">Footer description</label>
+          <input id="brand-footer" value={brand.footer_tagline || ""} placeholder="A boutique source for research-grade peptides…" onChange={(e) => setBrand((f) => ({ ...f, footer_tagline: e.target.value }))} style={inputStyle} />
+        </div>
       </div>
       {msg && <div role="status" style={{ fontSize: 12, color: msg.startsWith("Saved") ? "var(--ok)" : "var(--err)", margin: "4px 0 12px" }}>{msg}</div>}
       <div style={{ display: "flex", gap: 12 }}>

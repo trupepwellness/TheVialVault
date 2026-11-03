@@ -131,6 +131,9 @@ create trigger trg_site_settings_updated_at before update on public.site_setting
   for each row execute function public.set_updated_at();
 
 alter table public.site_settings enable row level security;
+-- Her own words + look (Admin › Settings › Your Words & Look): headline/motto/
+-- footer overrides, headline + reading fonts, reading size. Blank = built-in.
+alter table public.site_settings add column if not exists branding jsonb not null default '{}'::jsonb;
 drop policy if exists "Public reads settings" on public.site_settings;
 create policy "Public reads settings" on public.site_settings
   for select to anon, authenticated using (true);
