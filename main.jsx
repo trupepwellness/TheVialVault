@@ -233,7 +233,7 @@ const G = `
   .bump{animation:bump .35s ease}
 
   /* layout */
-  .page{padding:116px 24px 90px}
+  .page{padding:122px 24px 90px}
   .wrap{max-width:1200px;margin:0 auto}
   .wrap-md{max-width:920px;margin:0 auto}
   .wrap-sm{max-width:760px;margin:0 auto}
@@ -283,7 +283,7 @@ const G = `
   .theme-btn:hover svg{transform:rotate(25deg)}
 
   /* nav */
-  .nav{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--nav-bg);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border-bottom:1px solid transparent;transition:background .3s ease,border-color .3s ease}
+  .nav{position:fixed;top:0;left:0;right:0;z-index:100;padding-top:env(safe-area-inset-top,0px);background:var(--nav-bg);backdrop-filter:blur(18px) saturate(1.3);-webkit-backdrop-filter:blur(18px) saturate(1.3);border-bottom:1px solid transparent;transition:background .3s ease,border-color .3s ease}
   .nav.scrolled{background:var(--nav-bg-solid);border-bottom-color:var(--border)}
   .nav-link{position:relative;display:inline-flex;align-items:center;gap:5px;padding:8px 2px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:${DIM2};transition:color .2s ease}
   .nav-link::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
@@ -299,7 +299,7 @@ const G = `
   .dd-item:hover .ico{background:var(--gold-fill);color:var(--ink);border-color:var(--gold-fill)}
   .dd-item .lbl{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--fg)}
   .dd-item .sub{font-size:10.5px;color:${DIM3};margin-top:1px}
-  .mmenu{background:var(--nav-bg-solid);border-top:1px solid var(--border);max-height:calc(100vh - 64px);overflow-y:auto;animation:menuIn .28s ease both}
+  .mmenu{background:var(--nav-bg-solid);border-top:1px solid var(--border);max-height:calc(100dvh - 70px - env(safe-area-inset-top,0px));overflow-y:auto;animation:menuIn .28s ease both}
   .mm-head{padding:18px 24px 8px;font-size:9.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:600}
   .mm-link{display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:14px 24px;font-size:14px;letter-spacing:.06em;font-weight:500;color:var(--fg);border-bottom:1px solid ${ln(0.14)};animation:ddItem .32s ease both;animation-delay:calc(var(--i,0) * 40ms)}
   .mm-link.on{color:var(--gold);background:rgba(var(--gold-rgb),.08)}
@@ -344,10 +344,10 @@ const G = `
   .hide-mobile{}
   @media(max-width:959px){.hide-nav{display:none!important}}
   @media(min-width:960px){.show-nav{display:none!important}}
-  @media(max-width:768px){.hide-mobile{display:none!important}.page{padding:100px 16px 70px}}
+  @media(max-width:768px){.hide-mobile{display:none!important}.page{padding:106px 16px 70px}}
   @media(max-width:1180px){.theme-label{display:none}}
   .nav-in{padding:0 24px}
-  @media(max-width:560px){.nav-in{padding:0 14px!important}.hide-xs{display:none!important}.nav-ctl{gap:6px!important}}
+  @media(max-width:560px){.nav-in{padding:0 12px!important;gap:8px!important}.hide-xs{display:none!important}.nav-ctl{gap:6px!important}.nav-logo-img{width:34px!important;height:34px!important}.nav-wordmark{font-size:17.5px!important;letter-spacing:.05em!important}.seg button{padding:0 8px}.theme-btn{padding:0 9px}.icon-btn{width:36px;height:36px}}
   @media(prefers-reduced-motion:reduce){
     *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
     .reveal{opacity:1;transform:none}
@@ -820,12 +820,12 @@ function Nav({ count, onCart, bumpKey }) {
 
   return (
     <nav ref={navRef} className={`nav ${scrolled ? "scrolled" : ""}`} aria-label="Main">
-      <div className="wrap nav-in" style={{ height: 66, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14 }}>
-        <button type="button" onClick={() => go("home")} aria-label={`The Vial Vault — ${t("nav.home")}`} style={{ display: "flex", alignItems: "center", gap: 11, flexShrink: 0 }}>
-          <img src={LOGO} alt="" width="38" height="38" style={{ width: 38, height: 38, objectFit: "contain", filter: "drop-shadow(0 0 10px rgba(var(--gold-rgb),.35))" }} />
-          <span style={{ textAlign: "left" }}>
+      <div className="wrap nav-in" style={{ height: 70, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14 }}>
+        <button type="button" onClick={() => go("home")} aria-label={`The Vial Vault — ${t("nav.home")}`} style={{ display: "flex", alignItems: "center", gap: 11, minWidth: 0 }}>
+          <img className="nav-logo-img" src={LOGO} alt="" width="38" height="38" style={{ width: 38, height: 38, objectFit: "contain", flexShrink: 0, filter: "drop-shadow(0 0 10px rgba(var(--gold-rgb),.35))" }} />
+          <span style={{ textAlign: "left", minWidth: 0, overflow: "hidden" }}>
             <span className="hide-mobile" style={{ display: "block", fontSize: 7.5, letterSpacing: "0.44em", color: DIM2, textTransform: "uppercase", marginBottom: 3 }}>The</span>
-            <span style={{ display: "block", fontFamily: SERIF, fontSize: 21, fontWeight: 400, color: GOLD, letterSpacing: "0.1em", lineHeight: 1, whiteSpace: "nowrap" }}>Vial Vault</span>
+            <span className="nav-wordmark" style={{ display: "block", fontFamily: SERIF, fontSize: 21, fontWeight: 400, color: GOLD, letterSpacing: "0.1em", lineHeight: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>Vial Vault</span>
           </span>
         </button>
 
@@ -859,7 +859,7 @@ function Nav({ count, onCart, bumpKey }) {
           </div>
         )}
 
-        <div className="nav-ctl" style={{ display: "flex", gap: 8, alignItems: "center" }}>
+        <div className="nav-ctl" style={{ display: "flex", gap: 8, alignItems: "center", flexShrink: 0 }}>
           <LangToggle />
           <ThemeToggle />
           <button type="button" className="icon-btn hide-xs" onClick={() => go("account")} title={session ? t("nav.account") : t("nav.login")} aria-label={session ? t("nav.account") : t("nav.login")}
@@ -1001,7 +1001,7 @@ function IntroPage() {
   const { settings } = useSettings();
   return (
     <div className="page-enter" style={{ position: "relative", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "84px 20px 50px", overflow: "hidden" }}>
-      <div style={{ position: "fixed", top: 14, right: 14, zIndex: 20, display: "flex", gap: 8, alignItems: "center" }}>
+      <div style={{ position: "fixed", top: "calc(14px + env(safe-area-inset-top, 0px))", right: 14, zIndex: 20, display: "flex", gap: 8, alignItems: "center" }}>
         <LangToggle />
         <ThemeToggle />
       </div>
@@ -1048,7 +1048,7 @@ function HomePage({ onAdd }) {
   ];
   return (
     <>
-      <section data-tour="hero" style={{ position: "relative", overflow: "hidden", padding: "104px 24px 96px", textAlign: "center" }}>
+      <section data-tour="hero" style={{ position: "relative", overflow: "hidden", padding: "110px 24px 96px", textAlign: "center" }}>
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 38%, var(--hero-glow) 0%, transparent 64%)", animation: "heroBreathe 7s ease-in-out infinite", pointerEvents: "none" }} />
         <img aria-hidden="true" alt="" src={LOGO2} style={{ position: "absolute", top: "50%", left: "50%", width: "min(620px,92vw)", transform: "translate(-50%,-52%)", opacity: 0.07, pointerEvents: "none", filter: "saturate(.8)" }} />
         <div style={{ position: "relative", zIndex: 1 }}>
