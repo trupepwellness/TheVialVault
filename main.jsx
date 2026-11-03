@@ -1138,6 +1138,7 @@ function HomePage({ onAdd }) {
 function ReviewsSection() {
   const { t } = useI18n();
   const [reviews, setReviews] = useState([]);
+  useReveal(reviews.length);
   const [loaded, setLoaded] = useState(false);
   const [name, setName] = useState("");
   const [rating, setRating] = useState(5);
