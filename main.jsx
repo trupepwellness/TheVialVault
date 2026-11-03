@@ -184,8 +184,8 @@ const G = `
     --border:rgba(138,59,43,.42); --border-strong:rgba(138,59,43,.74);
     --glass:#FFFFFF; --glass2:#FFFFFF;
     --card-bg:linear-gradient(180deg,#FFFFFF,#FFF8F5);
-    --card-shadow:0 1px 2px rgba(90,40,30,.09),0 12px 32px rgba(90,40,30,.11);
-    --card-shadow-hover:0 20px 48px rgba(90,40,30,.15),0 0 0 1px rgba(138,59,43,.3);
+    --card-shadow:0 2px 6px rgba(90,40,30,.06),0 18px 44px rgba(90,40,30,.10);
+    --card-shadow-hover:0 24px 54px rgba(90,40,30,.14),0 0 0 1px rgba(138,59,43,.3);
     --input-bg:#FFFFFF;
     --nav-bg:rgba(251,243,239,.82); --nav-bg-solid:rgba(251,243,239,.97);
     --overlay:rgba(40,16,12,.46);
@@ -243,9 +243,9 @@ const G = `
   .grid-auto{display:grid;gap:24px}
 
   /* surfaces */
-  .card{border:1px solid var(--border);border-radius:18px;background:var(--card-bg);box-shadow:var(--card-shadow);transition:transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .4s ease,border-color .3s ease}
+  .card{border:1px solid var(--border);border-radius:24px;background:var(--card-bg);box-shadow:var(--card-shadow);transition:transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .4s ease,border-color .3s ease}
   .card-hover:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:var(--card-shadow-hover)}
-  .panel{border:1px solid var(--border);border-radius:16px;background:var(--glass2);box-shadow:var(--card-shadow)}
+  .panel{border:1px solid var(--border);border-radius:20px;background:var(--glass2);box-shadow:var(--card-shadow)}
 
   /* controls */
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 30px;font-size:10px;letter-spacing:.2em;font-weight:600;text-transform:uppercase;font-family:${SANS};border-radius:999px;border:1px solid var(--gold-fill);position:relative;transition:transform .2s ease,box-shadow .25s ease,background .25s ease,color .25s ease,filter .2s ease;white-space:nowrap}
@@ -263,7 +263,7 @@ const G = `
   .chip{padding:8px 16px;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;border-radius:999px;border:1px solid var(--border);color:${DIM2};background:var(--glass);transition:all .2s ease}
   .chip:hover{border-color:var(--gold);color:var(--gold)}
   .chip.on{border-color:var(--gold);color:var(--gold);background:rgba(var(--gold-rgb),.12)}
-  .input{width:100%;padding:12px 15px;font-size:13px;border:1px solid var(--border);border-radius:12px;background:var(--input-bg);color:var(--fg);transition:border-color .2s ease,box-shadow .2s ease}
+  .input{width:100%;padding:12px 15px;font-size:13px;border:1px solid var(--border);border-radius:16px;background:var(--input-bg);color:var(--fg);transition:border-color .2s ease,box-shadow .2s ease}
   .input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(var(--gold-rgb),.16)}
   .input::placeholder{color:${fg(0.45)}}
   .link{color:var(--gold);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
@@ -306,7 +306,7 @@ const G = `
   .mm-link svg{color:var(--gold);flex-shrink:0}
 
   /* product placeholder + media */
-  .media{position:relative;overflow:hidden;border-radius:14px;border:1px solid var(--border);background:var(--bg2)}
+  .media{position:relative;overflow:hidden;border-radius:18px;border:1px solid var(--border);background:var(--bg2)}
   .media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
   .card-hover:hover .media img{transform:scale(1.045)}
   .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:radial-gradient(ellipse at 50% 38%,rgba(var(--gold-rgb),.2),transparent 68%),linear-gradient(160deg,var(--bg2),var(--bg))}
@@ -2336,13 +2336,13 @@ function Login() {
 }
 
 const inputStyle = {
-  width: "100%", padding: "11px 13px", fontSize: 13, marginBottom: 12,
-  border: `1px solid ${ADMIN_BORDER}`, borderRadius: 4, background: fg(0.06),
+  width: "100%", padding: "13px 15px", fontSize: 14.5, marginBottom: 14,
+  border: `1px solid ${ADMIN_BORDER}`, borderRadius: 12, background: fg(0.06),
   color: FG, fontFamily: SANS,
 };
 const buttonStyle = {
-  padding: "12px 20px", fontSize: 12, letterSpacing: 2, textTransform: "uppercase",
-  fontWeight: 600, background: GOLD, color: INK, border: "none", borderRadius: 4, fontFamily: SANS, cursor: "pointer",
+  padding: "14px 24px", fontSize: 13, letterSpacing: 2, textTransform: "uppercase",
+  fontWeight: 600, background: GOLD, color: INK, border: "none", borderRadius: 999, fontFamily: SANS, cursor: "pointer",
 };
 const ghostButton = { ...buttonStyle, background: "transparent", border: `1px solid ${GOLD}`, color: GOLD };
 
@@ -3097,9 +3097,9 @@ function ProductForm({
   );
 }
 
-const labelStyle = { display: "block", fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", color: fg(0.55), marginBottom: 6, marginTop: 10 };
-const th = { padding: "10px 12px" };
-const td = { padding: "10px 12px", verticalAlign: "top" };
+const labelStyle = { display: "block", fontSize: 11, letterSpacing: 1.5, textTransform: "uppercase", color: fg(0.55), marginBottom: 7, marginTop: 10 };
+const th = { padding: "12px 14px" };
+const td = { padding: "12px 14px", verticalAlign: "top" };
 
 // ── ANALYTICS TAB ───────────────────────────────────────────────
 // Every number below is computed from this project's own `site_events` table.
