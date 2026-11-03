@@ -328,6 +328,11 @@ const G = `
   html[data-fsize="large"] body{font-size:16px}
   html[data-fsize="large"] .card p{font-size:14.5px;line-height:1.75}
   html[data-fsize="large"] .btn{font-size:11px}
+  /* homepage hero logo — as large as its area allows, square so it never
+     distorts, capped by viewport width on portrait and by height in
+     landscape so it never crowds out the headline */
+  .hero-logo{position:relative;width:min(440px,86vw);aspect-ratio:1/1;margin:0 auto 6px;animation:floatY 5s ease-in-out infinite}
+  @media(orientation:landscape) and (max-height:540px){.hero-logo{width:min(320px,72vh)}}
   .ph-ring{width:62%;aspect-ratio:1;max-width:150px;border-radius:50%;border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 40px rgba(var(--gold-rgb),.1)}
   .ph-mono{font-family:${SERIF};font-size:clamp(44px,9vw,68px);font-weight:300;color:var(--gold);line-height:1}
   .ph-brand{font-size:8px;letter-spacing:.42em;text-transform:uppercase;color:${DIM3}}
@@ -1053,9 +1058,9 @@ function HomePage({ onAdd }) {
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 38%, var(--hero-glow) 0%, transparent 64%)", animation: "heroBreathe 7s ease-in-out infinite", pointerEvents: "none" }} />
         <img aria-hidden="true" alt="" src={LOGO2} style={{ position: "absolute", top: "50%", left: "50%", width: "min(620px,92vw)", transform: "translate(-50%,-52%)", opacity: 0.07, pointerEvents: "none", filter: "saturate(.8)" }} />
         <div style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ position: "relative", width: 258, height: 258, margin: "0 auto 6px", animation: "floatY 5s ease-in-out infinite" }}>
-            <div aria-hidden="true" style={{ position: "absolute", inset: -42, borderRadius: "50%", background: "radial-gradient(circle, rgba(var(--gold-rgb),.30) 0%, rgba(var(--gold-rgb),.08) 48%, transparent 68%)", filter: "blur(18px)", pointerEvents: "none" }} />
-            <img src={LOGO2} alt="The Vial Vault" width="258" height="258" style={{ position: "relative", width: 258, height: 258, objectFit: "contain", display: "block", filter: "var(--logo-filter)" }} />
+          <div className="hero-logo">
+            <div aria-hidden="true" style={{ position: "absolute", inset: "-16%", borderRadius: "50%", background: "radial-gradient(circle, rgba(var(--gold-rgb),.30) 0%, rgba(var(--gold-rgb),.08) 48%, transparent 68%)", filter: "blur(18px)", pointerEvents: "none" }} />
+            <img src={LOGO2} alt="The Vial Vault" width="440" height="440" style={{ position: "relative", width: "100%", height: "100%", objectFit: "contain", display: "block", filter: "var(--logo-filter)" }} />
           </div>
           <div className="eyebrow" style={{ marginBottom: 26, animation: "fadeUp .7s ease both" }}>{t("home.eyebrow")}</div>
           <h1 className="display" style={{ fontSize: "clamp(46px,8vw,104px)", marginBottom: 26, animation: "fadeUp .8s .08s ease both" }}>
