@@ -332,10 +332,11 @@ const G = `
   html[data-fsize="xlarge"] .card p{font-size:19px;line-height:1.75}
   html[data-fsize="xlarge"] .btn{font-size:12.5px}
   /* floating logos (entry screen + homepage hero) — stretch nearly edge to
-     edge of their column on every screen, square so they never distort,
-     height-capped in landscape so they never eat the whole fold */
-  .hero-logo{position:relative;width:min(680px,96%);aspect-ratio:1/1;margin:0 auto 6px;animation:floatY 5s ease-in-out infinite}
-  @media(orientation:landscape) and (max-height:540px){.hero-logo{width:min(680px,96%,118vh)}}
+     edge on every screen, square so they never distort, height-capped in
+     landscape so they never eat the whole fold */
+  .hero-logo{position:relative;width:min(1000px,100%);aspect-ratio:1/1;margin:0 auto 6px;animation:floatY 5s ease-in-out infinite}
+  .entry-logo{position:relative;width:min(720px,94vw);aspect-ratio:1/1;margin:0 auto 22px;animation:floatY 4.2s ease-in-out infinite;flex-shrink:0}
+  @media(orientation:landscape) and (max-height:540px){.hero-logo{width:min(1000px,100%,118vh)}.entry-logo{width:min(720px,94vw,118vh)}}
   .ph-ring{width:62%;aspect-ratio:1;max-width:150px;border-radius:50%;border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 40px rgba(var(--gold-rgb),.1)}
   .ph-mono{font-family:${SERIF};font-size:clamp(44px,9vw,68px);font-weight:300;color:var(--gold);line-height:1}
   .ph-brand{font-size:8px;letter-spacing:.42em;text-transform:uppercase;color:${DIM3}}
@@ -995,7 +996,7 @@ function FloatingParticles() {
 
 function FloatingHeroLogo() {
   return (
-    <div className="hero-logo" style={{ margin: "0 auto 22px", animationDuration: "4.2s" }}>
+    <div className="entry-logo">
       <div style={{ position: "absolute", inset: "-16%", borderRadius: "50%", background: "radial-gradient(circle, rgba(var(--gold-rgb),.26) 0%, rgba(var(--gold-rgb),.07) 48%, transparent 68%)", filter: "blur(20px)", pointerEvents: "none" }} />
       <img src={LOGO2} alt="The Vial Vault" width="680" height="680" style={{ position: "relative", width: "100%", height: "100%", objectFit: "contain", display: "block", filter: "var(--logo-filter)" }} />
     </div>
