@@ -156,22 +156,23 @@ const G = `
   :root{
     --bg:#0A0A0A; --bg2:#101010;
     --fg:#FFFFFF; --fg-rgb:255,255,255; --ink:#0A0A0A;
-    --dim:rgba(255,255,255,.88); --dim2:rgba(255,255,255,.68); --dim3:rgba(255,255,255,.52);
-    --gold:#EDB9A3; --gold-rgb:237,185,163; --gold2:#F5D3C4;
-    --gold-fill:#E0A68F; --gold-fill2:#F2C9B8; --gold-deep:#A8644C;
-    --line-rgb:196,133,106;
-    --border:rgba(196,133,106,.38); --border-strong:rgba(196,133,106,.72);
+    --dim:rgba(255,255,255,.88); --dim2:rgba(255,255,255,.78); --dim3:rgba(255,255,255,.64);
+    --gold:#F4A7C3; --gold-rgb:244,167,195; --gold2:#F9C9DA;
+    --gold-fill:#E88CA8; --gold-fill2:#F6BFD2; --gold-deep:#C96F92;
+    --line-rgb:232,140,168;
+    --border:rgba(232,140,168,.42); --border-strong:rgba(232,140,168,.78);
+    --frame:rgba(244,167,195,.5);
     --glass:rgba(255,255,255,.04); --glass2:rgba(255,255,255,.075);
     --card-bg:linear-gradient(160deg,rgba(255,255,255,.085),rgba(255,255,255,.03));
     --card-shadow:none;
-    --card-shadow-hover:0 16px 46px rgba(0,0,0,.55),0 0 0 1px rgba(237,185,163,.3);
+    --card-shadow-hover:0 16px 46px rgba(0,0,0,.55),0 0 0 1px rgba(244,167,195,.35);
     --input-bg:rgba(255,255,255,.06);
     --nav-bg:rgba(10,10,10,.74); --nav-bg-solid:rgba(10,10,10,.96);
     --overlay:rgba(0,0,0,.66);
     --ok:#7fd48a; --err:#ff7b7b; --warn:#e0a84a;
-    --hero-glow:rgba(196,133,106,.15);
+    --hero-glow:rgba(232,140,168,.24);
     --drawer-bg:linear-gradient(180deg,#131313,#0c0c0c);
-    --logo-filter:drop-shadow(0 0 30px rgba(237,185,163,.45)) drop-shadow(0 10px 18px rgba(0,0,0,.85));
+    --logo-filter:drop-shadow(0 0 34px rgba(244,167,195,.55)) drop-shadow(0 10px 18px rgba(0,0,0,.85));
   }
   :root[data-theme="light"]{
     --bg:#FBF3EF; --bg2:#F4E4DD;
@@ -190,6 +191,7 @@ const G = `
     --overlay:rgba(40,16,12,.46);
     --ok:#2c7a3b; --err:#b3261e; --warn:#8a5a00;
     --hero-glow:rgba(217,154,130,.24);
+    --frame:rgba(201,111,146,.42);
     --drawer-bg:linear-gradient(180deg,#FFFFFF,#FCF3EF);
     --logo-filter:drop-shadow(0 0 22px rgba(217,154,130,.45)) drop-shadow(0 8px 14px rgba(90,40,30,.22));
   }
@@ -241,12 +243,12 @@ const G = `
   .grid-auto{display:grid;gap:24px}
 
   /* surfaces */
-  .card{border:1px solid var(--border);border-radius:6px;background:var(--card-bg);box-shadow:var(--card-shadow);transition:transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .4s ease,border-color .3s ease}
+  .card{border:1px solid var(--border);border-radius:18px;background:var(--card-bg);box-shadow:var(--card-shadow);transition:transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .4s ease,border-color .3s ease}
   .card-hover:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:var(--card-shadow-hover)}
-  .panel{border:1px solid var(--border);border-radius:8px;background:var(--glass2);box-shadow:var(--card-shadow)}
+  .panel{border:1px solid var(--border);border-radius:16px;background:var(--glass2);box-shadow:var(--card-shadow)}
 
   /* controls */
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 30px;font-size:10px;letter-spacing:.2em;font-weight:600;text-transform:uppercase;font-family:${SANS};border-radius:2px;border:1px solid var(--gold-fill);position:relative;transition:transform .2s ease,box-shadow .25s ease,background .25s ease,color .25s ease,filter .2s ease;white-space:nowrap}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 30px;font-size:10px;letter-spacing:.2em;font-weight:600;text-transform:uppercase;font-family:${SANS};border-radius:999px;border:1px solid var(--gold-fill);position:relative;transition:transform .2s ease,box-shadow .25s ease,background .25s ease,color .25s ease,filter .2s ease;white-space:nowrap}
   .btn-gold{background:linear-gradient(135deg,var(--gold-deep) 0%,var(--gold-fill) 42%,var(--gold-fill2) 62%,var(--gold-fill) 82%,var(--gold-deep) 100%);background-size:220% 220%;color:var(--ink)}
   .btn-gold:hover{transform:translateY(-1px);filter:brightness(1.07);box-shadow:0 8px 26px rgba(var(--gold-rgb),.34)}
   .btn-outline{background:transparent;color:var(--gold);border-color:var(--gold)}
@@ -261,7 +263,7 @@ const G = `
   .chip{padding:8px 16px;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;border-radius:999px;border:1px solid var(--border);color:${DIM2};background:var(--glass);transition:all .2s ease}
   .chip:hover{border-color:var(--gold);color:var(--gold)}
   .chip.on{border-color:var(--gold);color:var(--gold);background:rgba(var(--gold-rgb),.12)}
-  .input{width:100%;padding:12px 15px;font-size:13px;border:1px solid var(--border);border-radius:4px;background:var(--input-bg);color:var(--fg);transition:border-color .2s ease,box-shadow .2s ease}
+  .input{width:100%;padding:12px 15px;font-size:13px;border:1px solid var(--border);border-radius:12px;background:var(--input-bg);color:var(--fg);transition:border-color .2s ease,box-shadow .2s ease}
   .input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(var(--gold-rgb),.16)}
   .input::placeholder{color:${fg(0.45)}}
   .link{color:var(--gold);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
@@ -304,7 +306,7 @@ const G = `
   .mm-link svg{color:var(--gold);flex-shrink:0}
 
   /* product placeholder + media */
-  .media{position:relative;overflow:hidden;border-radius:4px;border:1px solid var(--border);background:var(--bg2)}
+  .media{position:relative;overflow:hidden;border-radius:14px;border:1px solid var(--border);background:var(--bg2)}
   .media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
   .card-hover:hover .media img{transform:scale(1.045)}
   .ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:radial-gradient(ellipse at 50% 38%,rgba(var(--gold-rgb),.2),transparent 68%),linear-gradient(160deg,var(--bg2),var(--bg))}
@@ -314,6 +316,13 @@ const G = `
   html[data-theme="light"] .dd-item .sub,html[data-theme="light"] .ph-brand{font-weight:600}
   html[data-theme="light"] .card p{font-weight:500}
   html[data-theme="light"] .input::placeholder{color:rgba(27,22,12,.6)}
+  /* dark-mode readability: bolder small text + card copy, same as light mode */
+  html[data-theme="dark"] .chip,html[data-theme="dark"] .pill,html[data-theme="dark"] .nav-link,html[data-theme="dark"] .seg button,html[data-theme="dark"] .theme-btn,html[data-theme="dark"] .eyebrow{font-weight:700}
+  html[data-theme="dark"] .dd-item .sub,html[data-theme="dark"] .ph-brand{font-weight:600}
+  html[data-theme="dark"] .card p{font-weight:500}
+  /* her signature soft-pink page frame (Origin has purple, TruPep has gold) */
+  @keyframes framePulse{0%,100%{opacity:.6}50%{opacity:1}}
+  .vv-frame{position:fixed;inset:0;pointer-events:none;z-index:2000;border:2px solid var(--frame);box-shadow:inset 0 0 26px var(--frame);animation:framePulse 5.5s ease-in-out infinite}
   .ph-ring{width:62%;aspect-ratio:1;max-width:150px;border-radius:50%;border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 40px rgba(var(--gold-rgb),.1)}
   .ph-mono{font-family:${SERIF};font-size:clamp(44px,9vw,68px);font-weight:300;color:var(--gold);line-height:1}
   .ph-brand{font-size:8px;letter-spacing:.42em;text-transform:uppercase;color:${DIM3}}
@@ -376,7 +385,7 @@ const startingVariant = (p) => p.variants.filter(isPriced).reduce((a, v) => (a =
 // ── THEME ───────────────────────────────────────────────────────
 const ThemeContext = createContext({ theme: "dark", toggle: () => {} });
 function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(() => (store.get("vv_theme", "dark") === "light" ? "light" : "dark"));
+  const [theme, setTheme] = useState(() => (store.get("vv_theme", "light") === "dark" ? "dark" : "light"));
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     store.set("vv_theme", theme);
@@ -958,12 +967,6 @@ function FloatingParticles() {
 function FloatingHeroLogo() {
   return (
     <div style={{ position: "relative", width: 200, height: 200, margin: "0 auto 22px", animation: "floatY 4.2s ease-in-out infinite" }}>
-      <div className="logo-ring-ccw" style={{
-        position: "absolute", top: "50%", left: "50%", width: "114%", height: "114%", borderRadius: "50%", pointerEvents: "none",
-        background: "conic-gradient(transparent 0deg, rgba(var(--gold-rgb),.95) 2deg, rgba(255,232,220,1) 4deg, rgba(var(--gold-rgb),.95) 6deg, transparent 9deg, transparent 360deg)",
-        maskImage: "radial-gradient(transparent 47%, black 49%, black 51%, transparent 53%)",
-        WebkitMaskImage: "radial-gradient(transparent 47%, black 49%, black 51%, transparent 53%)", filter: "blur(.6px)",
-      }} />
       <div style={{ position: "absolute", inset: -46, borderRadius: "50%", background: "radial-gradient(circle, rgba(var(--gold-rgb),.26) 0%, rgba(var(--gold-rgb),.07) 48%, transparent 68%)", filter: "blur(20px)", pointerEvents: "none" }} />
       <img src={LOGO2} alt="The Vial Vault" width="200" height="200" style={{ position: "relative", width: 200, height: 200, objectFit: "contain", display: "block", filter: "var(--logo-filter)" }} />
     </div>
@@ -1022,10 +1025,14 @@ function HomePage({ onAdd }) {
   ];
   return (
     <>
-      <section data-tour="hero" style={{ position: "relative", overflow: "hidden", padding: "150px 24px 96px", textAlign: "center" }}>
+      <section data-tour="hero" style={{ position: "relative", overflow: "hidden", padding: "104px 24px 96px", textAlign: "center" }}>
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 38%, var(--hero-glow) 0%, transparent 64%)", animation: "heroBreathe 7s ease-in-out infinite", pointerEvents: "none" }} />
         <img aria-hidden="true" alt="" src={LOGO2} style={{ position: "absolute", top: "50%", left: "50%", width: "min(620px,92vw)", transform: "translate(-50%,-52%)", opacity: 0.07, pointerEvents: "none", filter: "saturate(.8)" }} />
         <div style={{ position: "relative", zIndex: 1 }}>
+          <div style={{ position: "relative", width: 196, height: 196, margin: "0 auto 6px", animation: "floatY 5s ease-in-out infinite" }}>
+            <div aria-hidden="true" style={{ position: "absolute", inset: -42, borderRadius: "50%", background: "radial-gradient(circle, rgba(var(--gold-rgb),.30) 0%, rgba(var(--gold-rgb),.08) 48%, transparent 68%)", filter: "blur(18px)", pointerEvents: "none" }} />
+            <img src={LOGO2} alt="The Vial Vault" width="196" height="196" style={{ position: "relative", width: 196, height: 196, objectFit: "contain", display: "block", filter: "var(--logo-filter)" }} />
+          </div>
           <div className="eyebrow" style={{ marginBottom: 26, animation: "fadeUp .7s ease both" }}>{t("home.eyebrow")}</div>
           <h1 className="display" style={{ fontSize: "clamp(46px,8vw,104px)", marginBottom: 26, animation: "fadeUp .8s .08s ease both" }}>
             {t("home.h1a")}<br /><span style={{ color: GOLD }}>{t("home.h1b")}</span>
@@ -1041,6 +1048,12 @@ function HomePage({ onAdd }) {
           </div>
         </div>
       </section>
+
+      <div aria-hidden="true" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14, padding: "30px 24px 0" }}>
+        <span style={{ height: 1, width: 72, background: "linear-gradient(90deg, transparent, var(--border-strong))" }} />
+        <span style={{ fontSize: 17, opacity: 0.9 }}>🦋</span>
+        <span style={{ height: 1, width: 72, background: "linear-gradient(90deg, var(--border-strong), transparent)" }} />
+      </div>
 
       <TrustBar />
 
@@ -4046,6 +4059,7 @@ function Shell() {
 
   return (
     <>
+      <div className="vv-frame" aria-hidden="true" />
       <a href="#main" className="skip" onClick={(e) => { e.preventDefault(); const m = document.getElementById("main"); m && m.focus(); }}>{t("common.skip")}</a>
       <div aria-live="polite" role="status" style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)", whiteSpace: "nowrap" }}>{liveMsg}</div>
       <Nav count={count} onCart={() => setCartOpen(true)} bumpKey={bumpKey} />
