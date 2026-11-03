@@ -387,3 +387,9 @@ on conflict (id) do nothing;
 insert into public.admins (user_id)
 select id from auth.users where lower(email) = 'thevialvault843@gmail.com'
 on conflict (user_id) do nothing;
+
+-- ── SHOWCASE (added 2026-11-03) ────────────────────────────────
+-- Peptides Madre features on the opening page from Admin › Products
+-- ("Showcase this peptide"). Defaults keep today's four featured.
+alter table public.products add column if not exists showcase boolean not null default false;
+update public.products set showcase = true where id in ('retatrutide','bpc157','nad','tb500') and showcase = false;

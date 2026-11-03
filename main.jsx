@@ -1037,7 +1037,8 @@ function HomePage({ onAdd }) {
   const { settings } = useSettings();
   useReveal(products.length);
   const featuredIds = ["retatrutide", "bpc157", "nad", "tb500"];
-  let featured = products.filter((p) => featuredIds.includes(p.id));
+  let featured = products.filter((p) => p.showcase);
+  if (!featured.length) featured = products.filter((p) => featuredIds.includes(p.id));
   if (!featured.length) featured = products.slice(0, 4);
   const n = products.length;
   const stats = [
@@ -1048,7 +1049,7 @@ function HomePage({ onAdd }) {
   ];
   return (
     <>
-      <section data-tour="hero" style={{ position: "relative", overflow: "hidden", padding: "110px 24px 96px", textAlign: "center" }}>
+      <section data-tour="hero" style={{ position: "relative", overflow: "hidden", padding: "110px 24px 40px", textAlign: "center" }}>
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 38%, var(--hero-glow) 0%, transparent 64%)", animation: "heroBreathe 7s ease-in-out infinite", pointerEvents: "none" }} />
         <img aria-hidden="true" alt="" src={LOGO2} style={{ position: "absolute", top: "50%", left: "50%", width: "min(620px,92vw)", transform: "translate(-50%,-52%)", opacity: 0.07, pointerEvents: "none", filter: "saturate(.8)" }} />
         <div style={{ position: "relative", zIndex: 1 }}>
@@ -1072,7 +1073,7 @@ function HomePage({ onAdd }) {
         </div>
       </section>
 
-      <div aria-hidden="true" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14, padding: "30px 24px 0" }}>
+      <div aria-hidden="true" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14, padding: "2px 24px 0" }}>
         <span style={{ height: 1, width: 72, background: "linear-gradient(90deg, transparent, var(--border-strong))" }} />
         <span style={{ fontSize: 17, opacity: 0.9 }}>🦋</span>
         <span style={{ height: 1, width: 72, background: "linear-gradient(90deg, var(--border-strong), transparent)" }} />
@@ -2932,11 +2933,23 @@ function ProductsTab() {
     load();
   }
 
+  // One tap: feature (or un-feature) a peptide on the opening page.
+  async function toggleShowcase(p) {
+    const next = !p.showcase;
+    setProducts((list) => list.map((x) => (x.id === p.id ? { ...x, showcase: next } : x)));
+    const { error } = await supabase.from("products").update({ showcase: next }).eq("id", p.id);
+    if (error) {
+      alert("Could not update the showcase: " + error.message);
+      setProducts((list) => list.map((x) => (x.id === p.id ? { ...x, showcase: !next } : x)));
+    }
+  }
+
   if (loading) return <Centered>Loading products…</Centered>;
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 20 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap", marginBottom: 20 }}>
+        <div style={{ fontSize: 12.5, color: fg(0.6), maxWidth: 430, lineHeight: 1.6 }}>★ Want a peptide on the opening page? Tap <strong style={{ color: GOLD }}>“Showcase this peptide”</strong> next to it below.</div>
         <button onClick={startNew} style={buttonStyle}>+ Add Product</button>
       </div>
 
@@ -2960,6 +2973,7 @@ function ProductsTab() {
                 <th style={th}>Stock</th>
                 <th style={th}>COA</th>
                 <th style={th}>Status</th>
+                <th style={th}>Showcase</th>
                 <th style={th}></th>
               </tr>
             </thead>
@@ -2985,6 +2999,11 @@ function ProductsTab() {
                     <td style={td}>{p.stock_quantity}</td>
                     <td style={td}>{p.coa_url ? <a href={p.coa_url} target="_blank" rel="noopener noreferrer" style={{ color: GOLD }}>View</a> : <span style={{ color: fg(0.4) }}>None</span>}</td>
                     <td style={td}>{p.active ? <span style={{ color: "#7fd48a" }}>Active</span> : <span style={{ color: fg(0.4) }}>Hidden</span>}</td>
+                    <td style={td}>
+                      {p.showcase
+                        ? <button onClick={() => toggleShowcase(p)} style={{ ...buttonStyle, padding: "8px 14px", fontSize: 10, letterSpacing: 1 }}>★ On homepage</button>
+                        : <button onClick={() => toggleShowcase(p)} style={{ ...ghostButton, padding: "8px 14px", fontSize: 10, letterSpacing: 1 }}>Showcase this peptide</button>}
+                    </td>
                     <td style={td}>
                       <div style={{ display: "flex", gap: 8 }}>
                         <button onClick={() => startEdit(p)} style={{ ...ghostButton, padding: "6px 12px", fontSize: 10 }}>Edit</button>
