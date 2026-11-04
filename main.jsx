@@ -345,6 +345,7 @@ const G = `
   .scenery-drift{animation:sceneryDrift 52s ease-in-out infinite alternate}
   @keyframes sceneryDrift{from{transform:scale(1.02) translateY(0)}to{transform:scale(1.08) translateY(-12px)}}
   @media (prefers-reduced-motion: reduce){.scenery-drift{animation:none}}
+  @media (orientation:landscape) and (min-width:768px){.scenery{background-position:center 10%}}
   .ph-ring{width:62%;aspect-ratio:1;max-width:150px;border-radius:50%;border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 40px rgba(var(--gold-rgb),.1)}
   .ph-mono{font-family:${SERIF};font-size:clamp(44px,9vw,68px);font-weight:300;color:var(--gold);line-height:1}
   .ph-brand{font-size:8px;letter-spacing:.42em;text-transform:uppercase;color:${DIM3}}
