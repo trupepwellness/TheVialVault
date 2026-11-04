@@ -343,7 +343,7 @@ const G = `
   html[data-theme="light"] .scenery{opacity:.92}
   html[data-theme="light"] .scenery-hero{opacity:.55}
   .scenery-drift{animation:sceneryDrift 52s ease-in-out infinite alternate}
-  @keyframes sceneryDrift{from{transform:scale(1.02) translateY(0)}to{transform:scale(1.08) translateY(-12px)}}
+  @keyframes sceneryDrift{from{transform:scale(1.01) translateY(0)}to{transform:scale(1.045) translateY(-10px)}}
   @media (prefers-reduced-motion: reduce){.scenery-drift{animation:none}}
   @media (orientation:landscape) and (min-width:768px){.scenery{background-position:center 10%}}
   .ph-ring{width:62%;aspect-ratio:1;max-width:150px;border-radius:50%;border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 40px rgba(var(--gold-rgb),.1)}
@@ -3957,6 +3957,19 @@ function SiteTour() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => { clearTimeout(timer); cancelAnimationFrame(raf); window.removeEventListener("resize", onResize); window.removeEventListener("scroll", onScroll); };
   }, [step, route.page]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Lock the page while the tour runs — the visitor can't scroll away and
+  // lose the highlight/card. The tour itself still scrolls each target into
+  // view programmatically between steps; the lock lifts when the tour ends.
+  useEffect(() => {
+    if (!running) return;
+    const root = document.documentElement;
+    const prevRoot = root.style.overflow;
+    const prevBody = document.body.style.overflow;
+    root.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    return () => { root.style.overflow = prevRoot; document.body.style.overflow = prevBody; };
+  }, [running]);
 
   // Focus the card when it appears or the step changes; Esc closes.
   useEffect(() => {
